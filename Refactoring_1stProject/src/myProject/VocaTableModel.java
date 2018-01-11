@@ -85,7 +85,7 @@ public class VocaTableModel extends AbstractTableModel{
 						.getVocabularies("select * from vocabularies");
 			} else if (tableModelType == 4 || tableModelType == 5
 					|| tableModelType == 6) {
-				MainProgram.updateObserver(1);
+				MainPanel.updateObserver(1);
 			}
 			super.fireTableRowsInserted(0, this.getRowCount());
 		}
@@ -106,7 +106,7 @@ public class VocaTableModel extends AbstractTableModel{
 						.getVocabularies("select * from vocabularies");
 			} else if (tableModelType == 4 || tableModelType == 5
 					|| tableModelType == 6) {
-				MainProgram.updateObserver(1);
+				MainPanel.updateObserver(1);
 			}
 		}
 		super.fireTableCellUpdated(0, this.getRowCount());
@@ -127,7 +127,7 @@ public class VocaTableModel extends AbstractTableModel{
 						.getVocabularies("select * from vocabularies");
 			} else if (tableModelType == 4 || tableModelType == 5
 					|| tableModelType == 6) {
-				MainProgram.updateObserver(1);
+				MainPanel.updateObserver(1);
 			}
 		}
 		super.fireTableCellUpdated(0, this.getRowCount());
@@ -785,17 +785,17 @@ public class VocaTableModel extends AbstractTableModel{
 		switch (tablemodelType) {
 			case 5 :
 				VocaTableModel.test1_vocabularies.clear();
-				VocaTableModel.test1_vocabularies = MainProgram.observers
+				VocaTableModel.test1_vocabularies = MainPanel.observers
 						.get(1).tablemodel.vocabularies;
 				VocaTableModel.test1_typedVocas.clear();
-				VocaTableModel.test1_typedVocas = MainProgram.observers.get(1).tablemodel.typedVocas;
+				VocaTableModel.test1_typedVocas = MainPanel.observers.get(1).tablemodel.typedVocas;
 				break;
 			case 6 :
 				VocaTableModel.test2_vocabularies.clear();
-				VocaTableModel.test2_vocabularies = MainProgram.observers
+				VocaTableModel.test2_vocabularies = MainPanel.observers
 						.get(2).tablemodel.vocabularies;
 				VocaTableModel.test2_typedVocas.clear();
-				VocaTableModel.test2_typedVocas = MainProgram.observers.get(2).tablemodel.typedVocas;
+				VocaTableModel.test2_typedVocas = MainPanel.observers.get(2).tablemodel.typedVocas;
 				break;
 		}
 	}

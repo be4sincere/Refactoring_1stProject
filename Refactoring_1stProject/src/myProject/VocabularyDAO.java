@@ -1,11 +1,12 @@
 package myProject;
 
-import java.sql.Connection;
 import java.sql.Date;
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Random;
@@ -27,11 +28,12 @@ public class VocabularyDAO {
 		try {
 			Class.forName(driver);
 			this.conn = DriverManager.getConnection(url, user, password);;
-/*			if (conn != null) {
-				System.out.println("DB 커넥션 객체 연결 성공");
-			} else {
-				System.out.println("DB 커넥션 객체 연결 실패");
-			}*/
+//			if (conn != null) {
+//				System.out.println("DB 커넥션 객체 연결 성공");
+//			} else {
+//				System.out.println("DB 커넥션 객체 연결 실패");
+//			}
+			
 			setColumnNames();
 		} catch (ClassNotFoundException | SQLException e) {
 			System.out.println("오타 또는 jar 파일 위치 확인 요망");

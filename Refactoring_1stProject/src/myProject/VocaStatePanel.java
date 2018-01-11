@@ -98,7 +98,7 @@ public class VocaStatePanel extends JPanel {
 				newtest.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						MainProgram.updateObserver(tableModelType);
+						MainPanel.updateObserver(tableModelType);
 					}
 				});
 				showAnswer.addActionListener(new VocaTestActionListener() );

@@ -54,21 +54,21 @@ public class InitPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if ( e.getSource() == jbtn[0] ){
-				MainProgram.updateObserver(1);
-				MainProgram.cl.first(MainProgram.mainpanel);
+				MainPanel.updateObserver(1);
+				MainPanel.cl.first(MainPanel.mainpanel);
 				for(int i=0; i<1 ; i++)
-					MainProgram.cl.next(MainProgram.mainpanel);
+					MainPanel.cl.next(MainPanel.mainpanel);
 			}else if( e.getSource() == jbtn[1]){
-				MainProgram.updateObserver(2);
-				MainProgram.cl.first(MainProgram.mainpanel);
+				MainPanel.updateObserver(2);
+				MainPanel.cl.first(MainPanel.mainpanel);
 				for(int i=0; i<2 ; i++){
-					MainProgram.cl.next(MainProgram.mainpanel);
+					MainPanel.cl.next(MainPanel.mainpanel);
 				}
 			}else if( e.getSource() == jbtn[2]){
-				MainProgram.updateObserver(3);
-				MainProgram.cl.first(MainProgram.mainpanel);
+				MainPanel.updateObserver(3);
+				MainPanel.cl.first(MainPanel.mainpanel);
 				for(int i=0; i<3 ; i++)
-					MainProgram.cl.next(MainProgram.mainpanel);
+					MainPanel.cl.next(MainPanel.mainpanel);
 			}
 		}
 	}

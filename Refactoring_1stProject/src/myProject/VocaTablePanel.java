@@ -278,7 +278,7 @@ public class VocaTablePanel extends JPanel {
 						tablemodel.deleteVocabulary(voca);
 						tablemodel.vocaCounts.remove(row);
 
-						MainProgram.observers.get(0).tablemodel.fireTableDataChanged();
+						MainPanel.observers.get(0).tablemodel.fireTableDataChanged();
 						
 					} else if (reaction == 2) {
 						JOptionPane.showMessageDialog(null, "削除を取り消しました。");
