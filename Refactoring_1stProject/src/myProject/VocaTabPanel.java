@@ -34,7 +34,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import myProject.Vocabulary.WordClass;
 
 public class VocaTabPanel extends JPanel {
-	private int tableModelType = 0;
+	private TableModelType tableModelType;
 	private VocaTableModel tablemodel = null; 
 	private JTabbedPane jtabPane = null;
 	private JPanel searchPane = null, sortingPane = null;
@@ -43,7 +43,7 @@ public class VocaTabPanel extends JPanel {
 	private final int tabWidth = VocaInterface.TABBED_WIDTH;
 	private final int tabHeight = VocaInterface.TABBED_HEIGHT;
 
-	public VocaTabPanel(VocaTableModel tablemodel, int tableModelType) {
+	public VocaTabPanel(VocaTableModel tablemodel, TableModelType tableModelType) {
 		this.tableModelType = tableModelType;
 		this.tablemodel = tablemodel;
 		compose();
@@ -55,7 +55,7 @@ public class VocaTabPanel extends JPanel {
 		searchPane = new SearchPanel();
 		jtabPane.add("検索·追加", searchPane);
 		
-		if (tableModelType == 1) {
+		if (tableModelType == TableModelType.VOCABULARY) {
 			sortingPane = new SortingPanel();
 			jtabPane.add("整列", sortingPane);
 		}
@@ -225,7 +225,7 @@ public class VocaTabPanel extends JPanel {
 		protected  void searchVoca(){
 			String text = jfield[0].getText();
 			if(text.length() != 0) {
-				VocaTablePanel searchPanel = new VocaTablePanel(4);
+				VocaTablePanel searchPanel = new VocaTablePanel(TableModelType.SEARCH);
 				VocaTableModel model = searchPanel.tablemodel;
 				String sql = "select * from vocabularies where ";
 				switch (searchoptioncombo.getSelectedIndex() ) {

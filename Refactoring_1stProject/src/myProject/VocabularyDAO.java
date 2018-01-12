@@ -1,12 +1,11 @@
 package myProject;
 
-import java.sql.Date;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Random;
@@ -46,7 +45,7 @@ public class VocabularyDAO {
 		columnNames = new HashMap<Integer, Vector<String>>();
 		for(int i=0 ; i<columnList.length;i++){
 			columnList[i] = new Vector<String>();
-			columnNames.put(i+1, columnList[i]);
+			columnNames.put(i, columnList[i]);
 		}
 		columnList[0].add("No.");		columnList[0].add("表記");		columnList[0].add("読み方");		columnList[0].add("品詞");		columnList[0].add("意味");
 		columnList[0].add("No.");		columnList[0].add("表記");		columnList[0].add("読み方");		columnList[0].add("品詞");		columnList[0].add("意味");
@@ -64,8 +63,8 @@ public class VocabularyDAO {
 		columnList[5].add("採点");		columnList[5].add("選択");
 	}
 	
-	public Vector<String> getColumnNames(int tableModelType ) {
-		return this.columnNames.get(tableModelType);
+	public Vector<String> getColumnNames(TableModelType tableModelType ) {
+		return this.columnNames.get(tableModelType.ordinal());
 	}
 	
 	public Vector<Vocabulary> getVocabularies(String sql) {

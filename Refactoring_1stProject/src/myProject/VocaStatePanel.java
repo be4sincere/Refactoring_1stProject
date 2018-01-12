@@ -20,7 +20,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 public class VocaStatePanel extends JPanel {
-		private int tableModelType = 0;
+		private TableModelType tableModelType;
 		private VocaTableModel tablemodel = null;
 		private int composize = VocaInterface.COMPONENT_SIZE;
 		private int cellwidth = VocaInterface.CELL_WIDTH;
@@ -31,14 +31,14 @@ public class VocaStatePanel extends JPanel {
 		
 		
 		
-		public VocaStatePanel( VocaTableModel tablemodel, int tableModelType) {
+		public VocaStatePanel( VocaTableModel tablemodel, TableModelType tableModelType) {
 			this.tablemodel = tablemodel;
 			this.tableModelType = tableModelType;
 			this.compose();
 			this.setevent();
 		}
 		private void compose() {
-			if(tableModelType == 2 || tableModelType ==3){
+			if(tableModelType == TableModelType.WTEST || tableModelType == TableModelType.RTEST){
 				super.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 10));
 				newtest = new JButton("新しいテスト");	
 				showAnswer = new JButton("正解を確認する");
@@ -49,7 +49,7 @@ public class VocaStatePanel extends JPanel {
 				super.add(newtest );
 				super.add(showAnswer);
 				
-			}else if(tableModelType == 5 || tableModelType == 6){
+			}else if(tableModelType == TableModelType.WTEST_RESULT || tableModelType == TableModelType.RTEST_RESULT){
 				super.setLayout(new GridLayout(3, 4, 5, 5));
 				jlabel = new JLabel[6];
 				jbutton = new JButton[6];
@@ -94,7 +94,7 @@ public class VocaStatePanel extends JPanel {
 		}
 		private void setevent() {
 			
-			if(tableModelType == 2 || tableModelType ==3 ){
+			if(tableModelType == TableModelType.WTEST || tableModelType ==TableModelType.RTEST ){
 				newtest.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -207,8 +207,8 @@ public class VocaStatePanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				switch ( tableModelType) {
-					case 2:{
-						VocaTablePanel meaningAnswerPanel = new VocaTablePanel(5);
+					case WTEST:{
+						VocaTablePanel meaningAnswerPanel = new VocaTablePanel(TableModelType.WTEST_RESULT);
 						VocaTableModel model = meaningAnswerPanel.tablemodel;
 						model.setFlagtoeven();
 						int rowIndex = 0;
@@ -242,7 +242,7 @@ public class VocaStatePanel extends JPanel {
 						jframe.setVisible(true);
 						break;
 					}
-					case 3:{
+					case RTEST:{
 						try {
 							UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() );
 						} catch (ClassNotFoundException
@@ -251,7 +251,7 @@ public class VocaStatePanel extends JPanel {
 								| UnsupportedLookAndFeelException e1) {
 							e1.printStackTrace();
 						}
-						VocaTablePanel wletterAnswerPanel = new VocaTablePanel(6);
+						VocaTablePanel wletterAnswerPanel = new VocaTablePanel(TableModelType.RTEST_RESULT);
 						VocaTableModel model = wletterAnswerPanel.tablemodel;
 						model.setFlagtoeven();
 						int rowIndex = 0;

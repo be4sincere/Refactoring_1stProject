@@ -54,18 +54,18 @@ public class InitPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if ( e.getSource() == jbtn[0] ){
-				MainPanel.updateObserver(1);
+				MainPanel.updateObserver(TableModelType.VOCABULARY);
 				MainPanel.cl.first(MainPanel.mainpanel);
 				for(int i=0; i<1 ; i++)
 					MainPanel.cl.next(MainPanel.mainpanel);
 			}else if( e.getSource() == jbtn[1]){
-				MainPanel.updateObserver(2);
+				MainPanel.updateObserver(TableModelType.WTEST);
 				MainPanel.cl.first(MainPanel.mainpanel);
 				for(int i=0; i<2 ; i++){
 					MainPanel.cl.next(MainPanel.mainpanel);
 				}
 			}else if( e.getSource() == jbtn[2]){
-				MainPanel.updateObserver(3);
+				MainPanel.updateObserver(TableModelType.RTEST);
 				MainPanel.cl.first(MainPanel.mainpanel);
 				for(int i=0; i<3 ; i++)
 					MainPanel.cl.next(MainPanel.mainpanel);

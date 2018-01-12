@@ -22,7 +22,7 @@ import javax.swing.table.TableColumn;
 import myProject.Vocabulary.WordClass;
 
 public class VocaTablePanel extends JPanel {
-	protected int tableModelType = 0;
+	protected TableModelType tableModelType;
 	protected int tableWidth = 0;
 	protected JTable table = null;
 	protected VocaTableModel tablemodel = null;
@@ -33,7 +33,7 @@ public class VocaTablePanel extends JPanel {
 	private final int cellwidth = VocaInterface.CELL_WIDTH;
 	private final int cellheight = VocaInterface.CELL_HEIGHT;
 	
-	public VocaTablePanel(int tableModelType) {
+	public VocaTablePanel(TableModelType tableModelType) {
 		this.tableModelType = tableModelType;
 
 		this.defaultPanel = new JPanel();
@@ -43,12 +43,12 @@ public class VocaTablePanel extends JPanel {
 		this.defaultPanel.add(tablepanel, BorderLayout.CENTER);
 		this.columnSizeRenderer();
 		
-		if( tableModelType == 2 || tableModelType == 3 || tableModelType == 5 || tableModelType ==6 ){
+		if( tableModelType == TableModelType.WTEST || tableModelType == TableModelType.RTEST || tableModelType == TableModelType.WTEST_RESULT || tableModelType == TableModelType.RTEST_RESULT ){
 			statePanel = new VocaStatePanel( this.tablemodel, tableModelType );
 			this.defaultPanel.add(statePanel, BorderLayout.SOUTH);
 		}
 		
-		if( tableModelType == 1 ||  tableModelType == 5 || tableModelType == 6){
+		if( tableModelType == TableModelType.VOCABULARY ||  tableModelType == TableModelType.WTEST_RESULT || tableModelType == TableModelType.RTEST_RESULT){
 			VocaTabPanel tabPanel = new VocaTabPanel( this.tablemodel, tableModelType );
 			this.defaultPanel.add(tabPanel, BorderLayout.EAST);	
 		}
@@ -65,7 +65,7 @@ public class VocaTablePanel extends JPanel {
 			tablemodel = new VocaTableModel(tableModelType);
 			table = new JTable(tablemodel);
 			
-			if(tableModelType == 1 ){
+			if(tableModelType == TableModelType.VOCABULARY ){
 				JComboBox<String> wordclass_comboBox = new JComboBox<String>( WordClass.getNames() );
 				
 				TableColumn tbcolumn_lvoca = table.getColumnModel().getColumn(3);
@@ -78,7 +78,7 @@ public class VocaTablePanel extends JPanel {
 				table.setDefaultRenderer(table.getColumnClass(0), new VocaTableCellRenderer());
 				table.repaint();
 			}
-			else if(tableModelType == 4){
+			else if(tableModelType == TableModelType.SEARCH){
 				JComboBox<String> wordclass_comboBox = new JComboBox<String>( WordClass.getNames() );
 				TableColumn tbcolumn = table.getColumnModel().getColumn(3);
 				
@@ -88,7 +88,7 @@ public class VocaTablePanel extends JPanel {
 				table.setDefaultRenderer(table.getColumnClass(0), new VocaTableCellRenderer());
 				table.repaint();
 			}
-			else if(tableModelType == 5 || tableModelType ==6){
+			else if(tableModelType == TableModelType.RTEST_RESULT || tableModelType == TableModelType.WTEST_RESULT){
 				String[] score_list = {"保留","O","X"};
 				JComboBox<String> score_comboBox = new JComboBox<String>(score_list);
 				
@@ -113,7 +113,7 @@ public class VocaTablePanel extends JPanel {
 	
 	private void columnSizeRenderer(){
 		switch (tableModelType) {
-			case 1 : {
+			case VOCABULARY : {
 				int columnWidth[] = {cellwidth * 1, cellwidth * 3, cellwidth * 3, cellwidth * 2,
 						cellwidth * 5, cellwidth * 1, cellwidth * 3, cellwidth * 3, cellwidth * 2,
 						cellwidth * 5};
@@ -130,7 +130,7 @@ public class VocaTablePanel extends JPanel {
 				}
 				break;
 			}
-			case 2 : {
+			case WTEST : {
 				int columnWidth[] = {cellwidth * 3, cellwidth * 3, cellwidth * 5,
 						cellwidth * 3, cellwidth * 3, cellwidth * 5};
 				tableWidth = calculateTableWidth(columnWidth);
@@ -146,7 +146,7 @@ public class VocaTablePanel extends JPanel {
 				}
 				break;
 			}
-			case 3 : {
+			case RTEST : {
 				int columnWidth[] = {cellwidth * 5, cellwidth * 3, cellwidth * 3,
 						cellwidth * 5, cellwidth * 3, cellwidth * 3};
 				tableWidth = calculateTableWidth(columnWidth);
@@ -162,7 +162,7 @@ public class VocaTablePanel extends JPanel {
 				}
 				break;
 			}
-			case 4 : {
+			case SEARCH : {
 				int columnWidth[] = {cellwidth * 1, cellwidth * 3, cellwidth * 3, cellwidth * 2,
 						cellwidth * 5, cellwidth * 2, cellwidth * 2, cellwidth * 3/2, cellwidth * 3/2,
 						cellwidth * 3/2};
@@ -179,7 +179,7 @@ public class VocaTablePanel extends JPanel {
 				}
 				break;
 			}
-			case 5 : {
+			case WTEST_RESULT : {
 				int columnWidth[] = {cellwidth * 1, cellwidth * 3, cellwidth * 3, cellwidth * 3,
 						cellwidth * 5 / 4 , cellwidth * 5, cellwidth * 5, cellwidth * 5 / 4,
 						cellwidth * 1};
@@ -196,7 +196,7 @@ public class VocaTablePanel extends JPanel {
 				}
 				break;
 			}
-			case 6 : {
+			case RTEST_RESULT : {
 				int columnWidth[] = {cellwidth * 1, cellwidth * 5, cellwidth * 3, cellwidth * 3,
 						cellwidth * 5 / 4 , cellwidth * 3, cellwidth * 3, cellwidth * 5 /4 ,
 						cellwidth * 1};
@@ -221,7 +221,7 @@ public class VocaTablePanel extends JPanel {
 		for (int i : columnWidth) {
 			total += i;
 		}
-		if(tableModelType == 2 || tableModelType ==3 ){
+		if(tableModelType == TableModelType.WTEST || tableModelType == TableModelType.RTEST ){
 			total -= 15;
 		}
 		return total + 15;
@@ -234,7 +234,7 @@ public class VocaTablePanel extends JPanel {
 			super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 			setHorizontalAlignment(SwingConstants.LEFT);
-			if ( tableModelType == 5 || tableModelType == 6){
+			if ( tableModelType == TableModelType.WTEST_RESULT || tableModelType == TableModelType.RTEST_RESULT){
 				if( ! isSelected ){
 					setBackground( new Color(255,255,255));	
 				}
@@ -259,7 +259,7 @@ public class VocaTablePanel extends JPanel {
 			int btn = e.getButton();
 			if (btn == MouseEvent.BUTTON3) {
 
-				if (tableModelType == 4 || tableModelType == 5 || tableModelType == 6) {
+				if (tableModelType == TableModelType.SEARCH || tableModelType == TableModelType.RTEST_RESULT || tableModelType == TableModelType.WTEST_RESULT) {
 					int reaction = JOptionPane.showConfirmDialog(null,
 							"選択した行を削除しますか。", "削除の確認",
 							JOptionPane.OK_CANCEL_OPTION);
@@ -269,7 +269,7 @@ public class VocaTablePanel extends JPanel {
 							return;
 						}
 						Vocabulary voca = tablemodel.vocabularies.get(row);
-						if( tableModelType == 5 || tableModelType == 6 ){
+						if( tableModelType == TableModelType.RTEST_RESULT || tableModelType == TableModelType.WTEST_RESULT ){
 							tablemodel.checkedBoxColumn.remove(row);
 							tablemodel.scoreBoxColumn.remove(row);
 							tablemodel.typedVocas.remove(row);	
@@ -283,7 +283,7 @@ public class VocaTablePanel extends JPanel {
 					} else if (reaction == 2) {
 						JOptionPane.showMessageDialog(null, "削除を取り消しました。");
 					}
-				}else if(tableModelType == 1 ){
+				}else if(tableModelType == TableModelType.SEARCH ){
 					String[] choices = {"取り消し","左の単語を削除", "右の単語を削除"};
 					int reaction = JOptionPane.showOptionDialog(null, "選択した行の一つの単語を削除しますか。", "削除の確認", JOptionPane.DEFAULT_OPTION, 
 							JOptionPane.QUESTION_MESSAGE , null, choices, "取り消し" );
