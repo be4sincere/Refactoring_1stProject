@@ -11,4 +11,4 @@
 * VocaInterface를 prefs(Preference) 형식으로 변경하기(제외)
   > Preference는 이름=값 형식을 갖는 것으로 적합하지 않다고 판단
 - [x] 테이블 모델 모드를 정수로 하지 않고 이넘상수가 매개변수가 되도록
-- [ ] 소켓 이용하여 단어 긁어오기
+- [ ] URLConnection 객체 이용하여 단어 긁어오기
