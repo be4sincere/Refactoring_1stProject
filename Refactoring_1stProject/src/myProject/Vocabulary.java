@@ -2,7 +2,6 @@ package myProject;
 
 import java.util.Vector;
 
-
 public class Vocabulary {
 
 	private String wletter, rletter, meaning, regdate, mdate;
@@ -101,8 +100,6 @@ public class Vocabulary {
 		this.wcount = wcount;
 	}
 
-
-
 	enum WordClass{
 		//품사전체, 명사, 대명사, 동사, 조사, 형용사, 접사, 부사, 감동사, 형용동사, 기타
 		NOUN("명사"), VERB("동사"), ADJECTIVE("형용사"), DescribeVerb("형용동사"), AdVerb("부사"),  
@@ -135,5 +132,6 @@ public class Vocabulary {
 			}
 			return namesVector;
 		}
-	}
+	}	
+
 }

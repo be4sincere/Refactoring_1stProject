@@ -78,9 +78,9 @@ public class MainPanel extends JFrame{
 		con.add(mainpanel, BorderLayout.CENTER);
 
 		initpanel = new InitPanel();
-		vocaPanel = new VocaTablePanel(1);
-		testMeaningPanel = new VocaTablePanel(2);
-		testWletterPanel = new VocaTablePanel(3);
+		vocaPanel = new VocaTablePanel(TableModelType.VOCABULARY);
+		testMeaningPanel = new VocaTablePanel(TableModelType.WTEST);
+		testWletterPanel = new VocaTablePanel(TableModelType.RTEST);
 		
 		observers= new Vector<VocaTablePanel>();
 		observers.add(vocaPanel);
@@ -123,19 +123,19 @@ public class MainPanel extends JFrame{
 		menuitem[6].addActionListener(new MyActionListener());
 		helpitem.addActionListener(new MyActionListener());
 	}
-	static void updateObserver(int tableModelType){
+	static void updateObserver(TableModelType tableModelType){
 		switch(tableModelType){
-			case 1:
+			case VOCABULARY:
 				MainPanel.observers.get(0).tablemodel.vocabularies = new VocabularyDAO().getVocabularies("select * from vocabularies");
 				MainPanel.observers.get(0).tablemodel.fireTableDataChanged();
 				break;
-			case 2:
+			case WTEST:
 				MainPanel.observers.get(1).tablemodel.vocabularies = new VocabularyDAO().getVocasRandom();
 				MainPanel.observers.get(1).tablemodel.typedVocas = MainPanel.observers.get(1).tablemodel.getTypedVocas();
 				MainPanel.observers.get(1).tablemodel.fireTableDataChanged();
 				VocaTableModel.updateTestVocas(5);
 				break;
-			case 3:
+			case RTEST:
 				MainPanel.observers.get(2).tablemodel.vocabularies = new VocabularyDAO().getVocasRandom();
 				MainPanel.observers.get(2).tablemodel.typedVocas = MainPanel.observers.get(2).tablemodel.getTypedVocas();
 				MainPanel.observers.get(2).tablemodel.fireTableDataChanged();

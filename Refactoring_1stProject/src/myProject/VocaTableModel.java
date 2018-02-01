@@ -19,22 +19,22 @@ public class VocaTableModel extends AbstractTableModel{
 	static Vector<Vector<String>> test2_typedVocas = null;
 	protected Vector<Boolean> checkedBoxColumn = null;
 	protected Vector<Vector<String>> scoreBoxColumn = null;
-	private int tableModelType = 0;
+	private TableModelType tableModelType = TableModelType.VOCABULARY;
 	private boolean flagtoeven = false;
 
-	public VocaTableModel(int tableModelType) {
+	public VocaTableModel(TableModelType tableModelType) {
 		this.tableModelType = tableModelType;
 		this.dao = new VocabularyDAO();
 		this.columnNames = dao.getColumnNames(tableModelType);
 
 		switch (tableModelType) {
-			case 1 :
+			case VOCABULARY :
 				this.vocabularies = dao
 						.getVocabularies("select * from vocabularies");
 				this.vocaCounts = getVocaCount();
 				break;
 
-			case 2 :
+			case WTEST :
 				this.vocabularies = dao.getVocasRandom();
 				this.typedVocas = this.getTypedVocas();
 
@@ -42,7 +42,7 @@ public class VocaTableModel extends AbstractTableModel{
 				VocaTableModel.test1_typedVocas = this.typedVocas;
 				break;
 
-			case 3 :
+			case RTEST :
 				this.vocabularies = dao.getVocasRandom();
 				this.typedVocas = this.getTypedVocas();
 
@@ -50,10 +50,10 @@ public class VocaTableModel extends AbstractTableModel{
 				VocaTableModel.test2_typedVocas = this.typedVocas;
 				break;
 
-			case 4 :
+			case SEARCH :
 				break;
 
-			case 5 :
+			case WTEST_RESULT :
 				this.vocabularies = VocaTableModel.test1_vocabularies;
 				this.typedVocas = VocaTableModel.test1_typedVocas;
 				this.scoreBoxColumn = getScoreBoxColumn();
@@ -61,7 +61,7 @@ public class VocaTableModel extends AbstractTableModel{
 				this.vocaCounts = getVocaCount();
 				break;
 
-			case 6 :
+			case RTEST_RESULT :
 				this.vocabularies = VocaTableModel.test2_vocabularies;
 				this.typedVocas = VocaTableModel.test2_typedVocas;
 				this.scoreBoxColumn = getScoreBoxColumn();
@@ -79,13 +79,13 @@ public class VocaTableModel extends AbstractTableModel{
 			JOptionPane.showMessageDialog(null, message);
 			cnt = VocaInterface.ERROR_DEFAULT;
 		} else if (cnt != VocaInterface.ERROR_DEFAULT) {
-			if (tableModelType == 1) {
+			if (tableModelType == TableModelType.VOCABULARY) {
 				this.vocabularies.clear();
 				this.vocabularies = dao
 						.getVocabularies("select * from vocabularies");
-			} else if (tableModelType == 4 || tableModelType == 5
-					|| tableModelType == 6) {
-				MainPanel.updateObserver(1);
+			} else if (tableModelType == TableModelType.SEARCH || tableModelType == TableModelType.RTEST_RESULT
+					|| tableModelType == TableModelType.WTEST_RESULT) {
+				MainPanel.updateObserver(TableModelType.VOCABULARY);
 			}
 			super.fireTableRowsInserted(0, this.getRowCount());
 		}
@@ -100,13 +100,13 @@ public class VocaTableModel extends AbstractTableModel{
 			JOptionPane.showMessageDialog(null, message);
 			cnt = VocaInterface.ERROR_DEFAULT;
 		} else if (cnt != VocaInterface.ERROR_DEFAULT) {
-			if (tableModelType == 1) {
+			if (tableModelType == TableModelType.VOCABULARY) {
 				this.vocabularies.clear();
 				this.vocabularies = dao
 						.getVocabularies("select * from vocabularies");
-			} else if (tableModelType == 4 || tableModelType == 5
-					|| tableModelType == 6) {
-				MainPanel.updateObserver(1);
+			} else if (tableModelType == TableModelType.SEARCH || tableModelType == TableModelType.WTEST_RESULT
+					|| tableModelType == TableModelType.RTEST_RESULT) {
+				MainPanel.updateObserver(TableModelType.VOCABULARY);
 			}
 		}
 		super.fireTableCellUpdated(0, this.getRowCount());
@@ -121,13 +121,13 @@ public class VocaTableModel extends AbstractTableModel{
 			JOptionPane.showMessageDialog(null, message);
 			cnt = VocaInterface.ERROR_DEFAULT;
 		} else if (cnt != VocaInterface.ERROR_DEFAULT) {
-			if (tableModelType == 1) {
+			if (tableModelType == TableModelType.VOCABULARY) {
 				this.vocabularies.clear();
 				this.vocabularies = dao
 						.getVocabularies("select * from vocabularies");
-			} else if (tableModelType == 4 || tableModelType == 5
-					|| tableModelType == 6) {
-				MainPanel.updateObserver(1);
+			} else if (tableModelType == TableModelType.SEARCH || tableModelType == TableModelType.WTEST_RESULT
+					|| tableModelType == TableModelType.RTEST_RESULT) {
+				MainPanel.updateObserver(TableModelType.VOCABULARY);
 			}
 		}
 		super.fireTableCellUpdated(0, this.getRowCount());
@@ -145,7 +145,7 @@ public class VocaTableModel extends AbstractTableModel{
 			JOptionPane.showMessageDialog(null, message);
 			cnt = VocaInterface.ERROR_DEFAULT;
 		} else if (cnt != VocaInterface.ERROR_DEFAULT) {
-			if (tableModelType == 1) {
+			if (tableModelType == TableModelType.VOCABULARY) {
 				this.vocabularies.clear();
 				this.vocabularies = dao
 						.getVocabularies("select * from vocabularies");
@@ -169,13 +169,13 @@ public class VocaTableModel extends AbstractTableModel{
 			cnt = VocaInterface.ERROR_DEFAULT;
 		} else if (cnt != VocaInterface.ERROR_DEFAULT) {
 			switch (tableModelType) {
-				case 4 :
+				case SEARCH :
 					vocabularies.remove(vocabulary);
 					break;
-				case 5 :
+				case WTEST_RESULT :
 					vocabularies.remove(vocabulary);
 					break;
-				case 6 :
+				case RTEST_RESULT :
 					vocabularies.remove(vocabulary);
 					break;
 			}
@@ -188,29 +188,30 @@ public class VocaTableModel extends AbstractTableModel{
 		return columnNames.size();
 	}
 	@Override
+	
 	public int getRowCount() {
 		switch (tableModelType) {
-			case 1 :
+			case VOCABULARY :
 				return (this.vocabularies.size() % 2 == 0) ? this.vocabularies
 						.size() / 2 : (this.vocabularies.size() / 2 + 1);
-			case 2 :
+			case WTEST :
 				return (this.vocabularies.size() % 2 == 0) ? this.vocabularies
 						.size() / 2 : (this.vocabularies.size() / 2 + 1);
-			case 3 :
+			case RTEST :
 				return (this.vocabularies.size() % 2 == 0) ? this.vocabularies
 						.size() / 2 : (this.vocabularies.size() / 2 + 1);
-			case 4 :
+			case SEARCH :
 				return this.vocabularies.size();
-			case 5 :
+			case WTEST_RESULT :
 				return this.vocabularies.size();
-			case 6 :
+			case RTEST_RESULT :
 				return this.vocabularies.size();
 		}
 		return 0;
 	}
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		if (tableModelType == 1) {
+		if (tableModelType == TableModelType.VOCABULARY) {
 
 			if (this.vocabularies.size() % 2 == 1) {
 				this.vocabularies.add(new Vocabulary());
@@ -253,7 +254,7 @@ public class VocaTableModel extends AbstractTableModel{
 						return vocabulary[1].getMeaning();
 				}
 			}
-		} else if (tableModelType == 2) {
+		} else if (tableModelType == TableModelType.WTEST) {
 
 			if (this.vocabularies.size() % 2 == 1) {
 				this.vocabularies.add(new Vocabulary());
@@ -291,7 +292,7 @@ public class VocaTableModel extends AbstractTableModel{
 				case 5 :
 					return typedVoca[1].get(1);
 			}
-		} else if (tableModelType == 3) {
+		} else if (tableModelType == TableModelType.RTEST) {
 
 			if (this.vocabularies.size() % 2 == 1) {
 				this.vocabularies.add(new Vocabulary());
@@ -327,7 +328,7 @@ public class VocaTableModel extends AbstractTableModel{
 					}
 					return typedVoca[1].get(1);
 			}
-		} else if (tableModelType == 4) {
+		} else if (tableModelType == TableModelType.SEARCH) {
 			Vocabulary vocabulary = this.vocabularies.get(rowIndex);
 
 			switch (columnIndex) {
@@ -353,7 +354,7 @@ public class VocaTableModel extends AbstractTableModel{
 				case 9 :
 					return vocabulary.getWrongCount();
 			}
-		} else if (tableModelType == 5) {
+		} else if (tableModelType == TableModelType.WTEST_RESULT) {
 			Vocabulary vocabulary = vocabularies.get(rowIndex);
 			switch (columnIndex) {
 				case 0 :
@@ -376,7 +377,7 @@ public class VocaTableModel extends AbstractTableModel{
 				case 8 :
 					return checkedBoxColumn.get(rowIndex);
 			}
-		} else if (tableModelType == 6) {
+		} else if (tableModelType == TableModelType.RTEST_RESULT) {
 			Vocabulary vocabulary = vocabularies.get(rowIndex);
 			switch (columnIndex) {
 				case 0 :
@@ -406,7 +407,7 @@ public class VocaTableModel extends AbstractTableModel{
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 
-		if (tableModelType == 1) {
+		if (tableModelType == TableModelType.VOCABULARY) {
 			Vocabulary[] vocabulary = new Vocabulary[2];
 			vocabulary[0] = this.vocabularies.get(rowIndex * 2);
 			vocabulary[1] = this.vocabularies.get(rowIndex * 2 + 1);
@@ -460,7 +461,7 @@ public class VocaTableModel extends AbstractTableModel{
 				}
 			}
 
-		} else if (tableModelType == 2) {
+		} else if (tableModelType == TableModelType.WTEST) {
 			Vector<String>[] typedvoca = new Vector[2];
 			typedvoca[0] = typedVocas.get(rowIndex * 2);
 			typedvoca[1] = typedVocas.get(rowIndex * 2 + 1);
@@ -483,7 +484,7 @@ public class VocaTableModel extends AbstractTableModel{
 					break;
 			}
 
-		} else if (tableModelType == 3) {
+		} else if (tableModelType == TableModelType.RTEST) {
 			Vector<String>[] typedvoca = new Vector[2];
 			typedvoca[0] = typedVocas.get(rowIndex * 2);
 			typedvoca[1] = typedVocas.get(rowIndex * 2 + 1);
@@ -505,7 +506,7 @@ public class VocaTableModel extends AbstractTableModel{
 					typedvoca[1].set(1, (String) aValue);
 					break;
 			}
-		} else if (tableModelType == 4) {
+		} else if (tableModelType == TableModelType.SEARCH) {
 			Vocabulary vocabulary = this.vocabularies.get(rowIndex);
 			switch (columnIndex) {
 				case 1 : {
@@ -541,7 +542,7 @@ public class VocaTableModel extends AbstractTableModel{
 				case 8 :
 					break;
 			}
-		} else if (tableModelType == 5) {
+		} else if (tableModelType == TableModelType.WTEST_RESULT) {
 			Vocabulary vocabulary = this.vocabularies.get(rowIndex);
 			Vector<String> typedvoca = typedVocas.get(rowIndex);
 			Vector<String> scorevoca = scoreBoxColumn.get(rowIndex);
@@ -583,7 +584,7 @@ public class VocaTableModel extends AbstractTableModel{
 					}
 					break;
 			}
-		} else if (tableModelType == 6) {
+		} else if (tableModelType == TableModelType.RTEST_RESULT) {
 			Vocabulary vocabulary = this.vocabularies.get(rowIndex);
 			Vector<String> typedvoca = typedVocas.get(rowIndex);
 			Vector<String> scorevoca = scoreBoxColumn.get(rowIndex);
@@ -630,12 +631,12 @@ public class VocaTableModel extends AbstractTableModel{
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
 		switch (tableModelType) {
-			case 1 :
+			case VOCABULARY :
 				if (columnIndex == 0 || columnIndex == 5) {
 					return false;
 				}
 				return true;
-			case 2 : {
+			case WTEST : {
 				Vocabulary[] vocabulary = new Vocabulary[2];
 				vocabulary[0] = this.vocabularies.get(rowIndex * 2);
 				vocabulary[1] = this.vocabularies.get(rowIndex * 2 + 1);
@@ -654,7 +655,7 @@ public class VocaTableModel extends AbstractTableModel{
 				}
 				return (columnIndex == 0 || columnIndex == 3) ? false : true;
 			}
-			case 3 : {
+			case RTEST : {
 				Vocabulary[] vocabulary = new Vocabulary[2];
 				vocabulary[0] = this.vocabularies.get(rowIndex * 2);
 				vocabulary[1] = this.vocabularies.get(rowIndex * 2 + 1);
@@ -673,11 +674,11 @@ public class VocaTableModel extends AbstractTableModel{
 				}
 				return (columnIndex == 0 || columnIndex == 3) ? false : true;
 			}
-			case 4 :
+			case SEARCH :
 				return (columnIndex >= 4 && columnIndex <= 7 || columnIndex == 0)
 						? false
 						: true;
-			case 5 :
+			case WTEST_RESULT :
 				if (columnIndex == 0) {
 					return false;
 				}
@@ -687,7 +688,7 @@ public class VocaTableModel extends AbstractTableModel{
 					}
 				}
 				return true;
-			case 6 :
+			case RTEST_RESULT :
 				if (columnIndex == 0) {
 					return false;
 				}
@@ -708,19 +709,19 @@ public class VocaTableModel extends AbstractTableModel{
 	public Class<?> getColumnClass(int columnIndex) {
 		Class columnType = String.class;
 		switch (tableModelType) {
-			case 1 :
+			case VOCABULARY :
 				if (columnIndex == 3 || columnIndex == 8)
 					columnType = WordClass.class;
 				break;
-			case 4 :
+			case SEARCH :
 				if (columnIndex == 3)
 					columnType = WordClass.class;
 				break;
-			case 5 :
+			case WTEST_RESULT :
 				if (columnIndex == 8)
 					columnType = Boolean.class;
 				break;
-			case 6 :
+			case RTEST_RESULT :
 				if (columnIndex == 8)
 					columnType = Boolean.class;
 				break;
@@ -768,11 +769,11 @@ public class VocaTableModel extends AbstractTableModel{
 	public void setFlagtoeven() {
 		if (this.flagtoeven = true && this.vocabularies.size() % 2 == 0) {
 			this.vocabularies.remove(vocabularies.size() - 1);
-			if (tableModelType == 2 || tableModelType == 3) {
+			if (tableModelType == TableModelType.WTEST || tableModelType == TableModelType.RTEST) {
 				this.typedVocas.remove(typedVocas.size() - 1);
 			}
-			if (tableModelType == 1 || tableModelType == 4
-					|| tableModelType == 5 || tableModelType == 6) {
+			if (tableModelType == TableModelType.VOCABULARY || tableModelType == TableModelType.SEARCH
+					|| tableModelType == TableModelType.WTEST_RESULT || tableModelType == TableModelType.RTEST_RESULT) {
 				this.vocaCounts.remove(vocaCounts.size() - 1);
 			}
 			this.flagtoeven = false;
